@@ -1,0 +1,157 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Publications - Kazi Rifat Ahmed</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .navbar {
+      background-color: #2A4365;
+      transition: background-color 0.3s ease;
+    }
+    .navbar a:hover {
+      color: #81E6D9;
+      transition: color 0.3s ease;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    @media (max-width: 640px) {
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .card {
+      background-color: #FFFFFF;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .section-title {
+      color: #2A4365;
+      font-weight: 600;
+      border-bottom: 2px solid #81E6D9;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+    }
+    body {
+      background-color: #F7FAFC;
+      font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="navbar text-white p-4 sticky top-0 z-10">
+    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+      <a href ="index.html"> <h1 class="text-2xl font-semibold mb-2 sm:mb-0">Kazi Rifat Ahmed</h1> </a>
+      <div class="nav-links">
+        <a href="index.html" class="hover:text-gray-300">Home</a>
+        <a href="education.html" class="hover:text-gray-300">Education</a>
+        <a href="experience.html" class="hover:text-gray-300">Experience</a>
+        <a href="research.html" class="hover:text-gray-300">Research</a>
+        <a href="skills.html" class="hover:text-gray-300">Skills</a>
+        <a href="publications.html" class="hover:text-gray-300 font-medium">Publications</a>
+        <a href="grants.html" class="hover:text-gray-300">Grants</a>
+        <a href="presentations.html" class="hover:text-gray-300">Presentations</a>
+        <a href="mentoring.html" class="hover:text-gray-300">Mentoring</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto py-12 px-4">
+    <div class="card">
+      <h2 class="section-title">Publications</h2>
+      <div class="text-gray-700 space-y-4">
+        <h3 class="text-lg font-medium">Published</h3>
+        <ul class="list-disc pl-5 space-y-2">
+          <h4><b>Journals</b></h4>
+          <li>Shohan, M. H., <b>Ahmed, K. R.</b>, Kahar, N. F., Jahan, N., & Maruf, M. (2025). Use of Natural Language Processing for the Detection of Hate Speech on Social Media. Journal of Advanced Research in Applied Sciences and Engineering Technology (ARASET), 51(2), 86-96.<a href="https://doi.org/10.37934/araset.51.2.8696"><b>[Link]</b></a>
+          </li>
+          <li>Khan, S., <b>Ahmed, K. R.</b>, Meem, S. S., Jahan, N., Islam, S., Abdut Khatib, Z. lshwar, & Mahmud, I. (2024). Prediction of Alzheimer’s Disease in the Pre-Clinical Phase using Machine Learning. Journal of Advanced Research in Applied Sciences and Engineering Technology, 56(3), 21–36. <a href="https://doi.org/10.37934/araset.56.3.2136"><b>[Link]</b></a>
+          </li>
+          <h4><b>Conferences</b></h4>
+          <li><b>K. R. Ahmed</b>, R. M. Saha, A. Masud, S. Sharmin and N. Jahan, "A Comprehensive Deep Learning Framework for Accurate Leukemia Classification from Microscopic Images," 2024 International Conference on Intelligent Computing and Emerging Communication Technologies (ICEC), Guntur, India, 2024, pp. 1-6. <a href="https://doi.org/10.1109/ICEC59683.2024.10837226"><b>[Link]</b></a>
+          </li>
+          <li>R. Ahamed Fahim, M. S. Arman, I. Sultana, N. Tasnim,<b> K. Rifat Ahmed</b> and I. Mahmud, "PhishGuard: Leveraging NLP and Machine Learning for Email Phishing Detection," 2024 International Conference on Big Data Analytics in Bioinformatics (DABCon), Kolkata, India, 2024, pp. 01-06. <a href="https://doi.org/10.1109/DABCon63472.2024.10919349"><b>[Link]</b></a>
+        </li>
+          <li>Suma, Z.F., <b>Ahmed, K.R.</b>, Abdul Khalib, Z.I., Akter Binti, F., Jahan, N. (2025). Immunity Booster Bangladeshi Medical Plants Recognition Using CNN: A Deep Learning Approach. In: Abdul Khalib, Z.I., Sabapathy, T., Padmanathan, S., Amir, A., Soh, P.J. (eds) Advances in Artificial Intelligence and Electronic Design Technologies. ICED 2024. Studies in Computational Intelligence, vol 1015. Springer, Cham. <a href="https://doi.org/10.1007/978-3-031-78918-2_1"><b>[Link]</b></a>
+          </li>
+          <li>K. H. Ferdous, M. S. Arman, <b>K. R. Ahmed</b>, N. Tasnim, I. Mahmud and P. Revathi, "Predicting Pre-Owned Bike Values with Machine Learning Techniques in Bangladesh," 2024 International Conference on Data Science and Network Security (ICDSNS), Tiptur, India, 2024, pp. 1-6.
+            <a href="https://doi.org/10.1109/ICDSNS62112.2024.10691304"><b>[Link]</b></a>
+          </li>
+          <li>M. Lima,<b> K. R. Ahmed</b>, N. Jahan, I. Mahmud, M. S. Parvez and P. Revathi, "Deep Learning Based Approach For Detecting Student Engagement Through Facial Emotions," 2024 International Conference on Data Science and Network Security (ICDSNS), Tiptur, India, 2024, pp. 1-6.<a href="https://doi.org/10.1109/ICDSNS62112.2024.10691098"><b>[Link]</b></a>
+          </li>
+        </ul>
+        <h3 class="text-lg font-medium">In Review</h3>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><b>K. R. Ahmed</b>, N. Jahan, A. Masud, N. Tasnim, S. Sharmin, N. Jahan Mim,I. Mahmud. 2024. BonoNet: A Deep Convolutional Neural Network for Recognizing Bangla Compound Characters. IAES International Journal of Artificial Intelligence (IJ‑AI). <b>[Accepted]</b></li>
+          <li> <b>Ahmed,K R</b>,Suprove Chandra Sarkar,Abdul Kadar Muhammad Masum. 2025. XceptMPox: A Robust Deep Learning Powered Web System for Mpox Detection and Classification. IEEE Access. </li>
+          <li><b>Ahmed,K R</b>,Mazbaur Rashida,Mujahidul Islam,Suprove Chandra Sarkar,Farhana Rahman,Nusrat Jahan,Imran Mahmud. 2025. Integrated Neural Network Framework for Binary Classification and Enhanced Diagnostic Feature Extraction in Monkeypox Medical Imaging. Annals of Emerging Technologies in Computing.</li>
+          <li>Bivaa, U S, Arman M S,<b> Ahmed, K R</b>, Tasnim N, Rafiq F B, Mahmud I. 2024. Optimizing Brain Stroke Prediction: A Machine Learning Based Strategy for Early Diagnosis and Prevention. International Journal of Advances in Intelligent Informatics.</li> 
+        </ul>
+       <!--  <h3 class="text-lg font-medium">In Submission</h3>
+        <ul class="list-disc pl-5 space-y-2">
+          <li>Hossain Tasnia, M, et al. (2025). MSRA-Net for Diabetic Retinopathy. <i>6th Int. Conf. on EICT</i>.</li>
+          <li>Md Seafullah, et al. (2025). Fetal Health Analysis via ML. <i>6th Int. Conf. on EICT</i>.</li>
+        </ul> -->
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-gray-800 text-white py-4 text-center mt-10">
+    <p>&copy; 2025 Kazi Rifat Ahmed. All rights reserved.</p>
+  </footer>
+
+  <script>
+    console.log("Publications page loaded successfully at 09:01 PM +06, Tuesday, August 05, 2025!");
+  </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research - Kazi Rifat Ahmed</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .navbar {
+      background-color: #2A4365;
+      transition: background-color 0.3s ease;
+    }
+    .navbar a:hover {
+      color: #81E6D9;
+      transition: color 0.3s ease;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    @media (max-width: 640px) {
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .card {
+      background-color: #FFFFFF;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .section-title {
+      color: #2A4365;
+      font-weight: 600;
+      border-bottom: 2px solid #81E6D9;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+    }
+    body {
+      background-color: #F7FAFC;
+      font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="navbar text-white p-4 sticky top-0 z-10">
+    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+      <a href ="index.html"> <h1 class="text-2xl font-semibold mb-2 sm:mb-0">Kazi Rifat Ahmed</h1> </a>
+      <div class="nav-links">
+        <a href="index.html" class="hover:text-gray-300">Home</a>
+        <a href="education.html" class="hover:text-gray-300">Education</a>
+        <a href="experience.html" class="hover:text-gray-300">Experience</a>
+        <a href="research.html" class="hover:text-gray-300 font-medium">Research</a>
+        <a href="skills.html" class="hover:text-gray-300">Skills</a>
+        <a href="publications.html" class="hover:text-gray-300">Publications</a>
+        <a href="grants.html" class="hover:text-gray-300">Grants</a>
+        <a href="presentations.html" class="hover:text-gray-300">Presentations</a>
+        <a href="mentoring.html" class="hover:text-gray-300">Mentoring</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto py-12 px-4">
+    <div class="card">
+      <h2 class="section-title">Research</h2>
+      <ul class="text-gray-700 list-disc pl-5 space-y-4">
+        <li>
+          <h3 class="text-lg font-medium"><b>M.S.c Thesis: Enhanced Detection of GAN‑Generated Image Forgeries Using Error Level Analysis and Deep Learning Models</b></h3>
+          <p>Jahangirnagar University, Fall 2024</p>
+          <p>Advisor: Dr. M. Mesbahuddin Sarker, Professor <a href="https://scholar.google.com/citations?hl=en&user=PG11Bc8AAAAJ">[Google Scholar]</a></p> 
+          <p>Department of Information Technology, Jahangirnagar University, Savar, Dhaka</p>
+          <p>Developed a model combining Error Level Analysis(ELA) with deep learning to detect GAN‑generated image forgeries. Utilized a dataset of 8,020 images, achieving superior accuracy with Xception, which outperformed other models in forgery detection.</p>
+        </li>
+        <li>
+          <h3 class="text-lg font-medium"><b>B.S.c Thesis: BonoNet: A Deep Convolutional Neural Network for Recognizing Bangla Compound Characters</b></h3>
+          <p>Daffodil International University, Fall 2022</p>
+          <p>Advisor: Nusrat Jahan, Assistant Professor & Head <a href="https://scholar.google.com/citations?hl=en&user=ITOb_GsAAAAJ">[Google Scholar]</a></p> 
+          <p>Department of Information Technology & management, Daffodil International University, Savar, Dhaka</p>
+          <p>Developed BonoNet, a deep CNN model for recognizing Bangla compound characters, utilizing the AIBangla dataset with 171 classes. Achieved the highest accuracy, outperforming existing models and enhancing Bangla OCR systems. This advancement supports the automation and analysis of compoundBangla characters.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="bg-gray-800 text-white py-4 text-center mt-10">
+    <p>&copy; 2025 Kazi Rifat Ahmed. All rights reserved.</p>
+  </footer>
+
+  <script>
+    console.log("Research page loaded successfully at 08:53 PM +06, August 05, 2025!");
+  </script>
+</body>
+</html>

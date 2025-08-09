@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kazi Rifat Ahmed - PhD Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom styles for a professional and soothing UI */
+    .navbar {
+      background-color: #2A4365;
+      transition: background-color 0.3s ease;
+    }
+    .navbar a:hover {
+      color: #81E6D9;
+      transition: color 0.3s ease;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    @media (max-width: 640px) {
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .profile-img {
+      border-radius: 50%;
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border: 4px solid #EDF2F7;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .card {
+      background-color: #FFFFFF;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .section-title {
+      color: #2A4365;
+      font-weight: 600;
+      border-bottom: 2px solid #81E6D9;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+    }
+    body {
+      background-color: #F7FAFC;
+      font-family: 'Arial', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Navbar -->
+  <nav class="navbar text-white p-4 sticky top-0 z-10">
+    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
+      <a href ="index.html"> <h1 class="text-2xl font-semibold mb-2 sm:mb-0">Kazi Rifat Ahmed</h1> </a>
+      <div class="nav-links">
+        <a href="index.html" class="hover:text-gray-300 font-medium">Home</a>
+        <a href="education.html" class="hover:text-gray-300">Education</a>
+        <a href="experience.html" class="hover:text-gray-300">Experience</a>
+        <a href="research.html" class="hover:text-gray-300">Research</a>
+        <a href="skills.html" class="hover:text-gray-300">Skills</a>
+        <a href="publications.html" class="hover:text-gray-300">Publications</a>
+        <a href="grants.html" class="hover:text-gray-300">Grants</a>
+        <a href="presentations.html" class="hover:text-gray-300">Presentations</a>
+        <a href="mentoring.html" class="hover:text-gray-300">Mentoring</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto py-12 px-4">
+    <div class="text-center mb-10">
+      <img src="C:\Users\DCL\Downloads\KRA_Port.jpg" alt="Kazi Rifat Ahmed" class="profile-img mx-auto mb-6" onerror="this.style.display='none';">
+      <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-2">Kazi Rifat Ahmed</h1>
+      <p class="text-teal-600 text-lg font-medium">I’m looking for PhD opportunities in Computer Science! </p>
+    </div>
+
+    <!-- About me -->
+    <div class="card mb-8">
+      <h2 class="section-title">About Me</h2>
+      <p class="text-gray-700 leading-relaxed">
+        I am currently a Lecturer in the Department of Software Engineering at Daffodil International University (DIU), Bangladesh. My research focuses on computer vision, pattern recognition, image and video processing, and medical image analysis, with a strong emphasis on applying computer vision and deep learning to solve real-world problems.
+      </p>
+        <p class="text-gray-700 leading-relaxed">
+        I have led and collaborated on multiple projects involving medical imaging, image forensics, generative AI, and low-level image analysis. Many of my works target healthcare and security related applications, aiming to develop AI solutions that are robust, explainable, and capable of performing reliably in safety-critical settings.
+
+      </p>
+        <p class="text-gray-700 leading-relaxed">
+        I am deeply motivated by the potential of AI to make a tangible impact on society, particularly in healthcare, where accurate and timely decision-making can save lives. My long-term academic goal is to advance the development of intelligent systems that can integrate seamlessly into practical workflows while maintaining transparency and trust.
+      </p>
+    </div>
+
+    <!-- Contact information -->
+    <div class="card mb-8">
+      <h2 class="section-title">Contact Information</h2>
+      <ul class="text-gray-700 list-disc pl-5 space-y-2">
+        <li>Email: <a href="mailto:kazirifat642@gmail.com" class="text-teal-600 hover:underline">kazirifat642@gmail.com</a></li>
+        <li>Google Scholar: <a href="https://scholar.google.com/citations?user=VY3GveUAAAAJ&hl=en&oi=ao" class="text-teal-600 hover:underline">[Google Scholar]</a></li>
+        <!-- <li>Twitter: <a href="#" class="text-teal-600 hover:underline">[Add Twitter handle]</a></li> -->
+        <li>GitHub: <a href="https://github.com/KaziRifat" class="text-teal-600 hover:underline">[GitHub]</a></li>
+      </ul>
+    </div>
+
+    <!-- Research interests -->
+    <div class="card mb-8">
+      <h2 class="section-title">Research Interests</h2>
+      <p class="text-gray-700 leading-relaxed">
+        My research focuses on building robust and reliable AI systems, with an emphasis on:
+      </p>
+      <ul class="text-gray-700 list-disc pl-5 space-y-2 mt-2">
+        <li>Computer Vision</li>
+        <li>Deep Learning</li>
+        <li>Image Processing</li>
+        <li>Machine Learning</li>
+        <li>Medical image analysis</li>
+        <li>Generative AI</li>
+        <li>Low-level image analysis</li> 
+      </ul>
+      <p class="text-gray-700 leading-relaxed mt-4">
+        Within these areas, I focus on developing methods that combine high accuracy with interpretability, enabling models to be trusted in high-stakes environments. My research also explores bridging theory and practice, ensuring that AI-driven solutions are not only technically advanced but also deployable in real-world settings.
+      </p>
+      <!-- <p class="text-gray-700 leading-relaxed mt-2">
+        If our interests align, I’d welcome your collaboration—feel free to reach out!
+      </p> -->
+    </div>
+
+    <!-- Background -->
+    <div class="card">
+      <h2 class="section-title">Background</h2>
+      <p class="text-gray-700 leading-relaxed">
+        I currently serve as a Lecturer at Daffodil International University, where I teach and supervise undergraduate research in artificial intelligence, deep learning, and computer vision. My work spans projects in medical imaging, AI-based forgery detection, and others. I have presented my research at international conferences and have collaborated with students and faculty to publish in peer-reviewed venues.
+      </p>
+      <p class="text-gray-700 leading-relaxed">
+        My principle is simple: Learn and Implement. This approach has driven my work from the classroom to the research lab, and it continues to shape my pursuit of impactful and innovative AI research.
+      </p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-4 text-center mt-10">
+    <p>&copy; 2025 Kazi Rifat Ahmed. All rights reserved.</p>
+  </footer>
+
+  <script>
+    console.log("Home page loaded successfully at 08:48 PM +06, August 05, 2025!");
+  </script>
+</body>
+</html>
