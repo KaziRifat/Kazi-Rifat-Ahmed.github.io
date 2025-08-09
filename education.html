@@ -1,100 +1,232 @@
-<!DOCTYPE html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Education - Kazi Rifat Ahmed</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Kazi Rifat Ahmed - Education</title>
   <style>
-    .navbar {
-      background-color: #2A4365;
-      transition: background-color 0.3s ease;
-    }
-    .navbar a:hover {
-      color: #81E6D9;
-      transition: color 0.3s ease;
-    }
-    .nav-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-    @media (max-width: 640px) {
-      .nav-links {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-    .card {
-      background-color: #FFFFFF;
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    .section-title {
-      color: #2A4365;
-      font-weight: 600;
-      border-bottom: 2px solid #81E6D9;
-      padding-bottom: 0.25rem;
-      margin-bottom: 1rem;
-    }
     body {
-      background-color: #F7FAFC;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background: #333;
+      color: #fff;
+      padding: 1rem 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    nav {
+      background: #444;
+      padding: 1rem;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    nav ul li {
+      margin: 0 1rem;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      color: #ddd;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    section h2 {
+      color: #333;
+      border-bottom: 2px solid #444;
+      padding-bottom: 0.5rem;
+    }
+
+    .education-entry {
+      margin-bottom: 1.5rem;
+    }
+
+    .education-entry h3 {
+      margin: 0.5rem 0;
+      font-size: 1.5rem;
+    }
+
+    .education-entry p {
+      margin: 0.25rem 0;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 1rem 0;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Hamburger Menu Styles */
+    .hamburger {
+      display: none;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+    }
+
+    .hamburger:focus {
+      outline: none;
+    }
+
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        background: #444;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+
+      nav ul.active {
+        display: flex;
+      }
+
+      nav ul li {
+        margin: 1rem 0;
+        text-align: center;
+      }
+
+      .hamburger {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+
+      header {
+        position: relative;
+      }
     }
   </style>
 </head>
-<body class="min-h-screen">
-  <nav class="navbar text-white p-4 sticky top-0 z-10">
-    <div class="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-      <a href ="index.html"> <h1 class="text-2xl font-semibold mb-2 sm:mb-0">Kazi Rifat Ahmed</h1> </a>
-      <div class="nav-links">
-        <a href="index.html" class="hover:text-gray-300">Home</a>
-        <a href="education.html" class="hover:text-gray-300 font-medium">Education</a>
-        <a href="experience.html" class="hover:text-gray-300">Experience</a>
-        <a href="research.html" class="hover:text-gray-300">Research</a>
-        <a href="skills.html" class="hover:text-gray-300">Skills</a>
-        <a href="publications.html" class="hover:text-gray-300">Publications</a>
-        <a href="grants.html" class="hover:text-gray-300">Grants</a>
-        <a href="presentations.html" class="hover:text-gray-300">Presentations</a>
-        <a href="mentoring.html" class="hover:text-gray-300">Mentoring</a>
-      </div>
-    </div>
-  </nav>
-
-  <div class="container mx-auto py-12 px-4">
-    <div class="card">
-      <h2 class="section-title">Education</h2>
-      <ul class="text-gray-700 list-disc pl-5 space-y-4">
-        <li>
-          <h3 class="text-lg font-medium">Jahangirnagar University, Savar, Dhaka, Bangladesh</h3>
-          <p>Professional M.S.c in Information Technology</p>
-          <p>2023 - 2024</p>
-          <p>Advisor: Dr. M. Mesbahuddin Sarker, Professor <a href="https://scholar.google.com/citations?hl=en&user=PG11Bc8AAAAJ">[Google Scholar]</a></p> 
-          <p>Department of Information Technology, Jahangirnagar University, Savar, Dhaka</p>
-        </li>
-        <li>
-          <h3 class="text-lg font-medium">Daffodil International University, Savar, Dhaka, Bangladesh</h3>
-          <p>B.S.c in Software Engineering</p>
-          <p> 2019 - 2023</p>
-          <p>Advisor: Nusrat Jahan, Assistant Professor & Head <a href="https://scholar.google.com/citations?hl=en&user=ITOb_GsAAAAJ">[Google Scholar]</a></p> 
-          <p>Department of Information Technology & management, Daffodil International University, Savar, Dhaka</p>
-        </li>
+<body>
+  <header>
+    <h1>Kazi Rifat Ahmed</h1>
+    <button class="hamburger" aria-label="Toggle menu">☰</button>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="education.html">Education</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="research.html">Research</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="grants.html">Grants</a></li>
+        <li><a href="presentations.html">Presentations</a></li>
+        <li><a href="mentoring.html">Mentoring</a></li>
       </ul>
-    </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section id="education">
+      <h2>Education</h2>
+      <div class="education-entry">
+        <h3>Jahangirnagar University, Savar, Dhaka, Bangladesh</h3>
+        <p>Professional M.S.c in Information Technology</p>
+        <p>2023 - 2024</p>
+        <p>Advisor: Dr. M. Mesbahuddin Sarker, Professor <a href="https://scholar.google.com/citations?hl=en&user=PG11Bc8AAAAJ">[Google Scholar]</a></p>
+        <p>Department of Information Technology, Jahangirnagar University, Savar, Dhaka</p>
+      </div>
+      <div class="education-entry">
+        <h3>Daffodil International University, Savar, Dhaka, Bangladesh</h3>
+        <p>B.S.c in Software Engineering</p>
+        <p>2019 - 2023</p>
+        <p>Advisor: Nusrat Jahan, Assistant Professor & Head <a href="https://scholar.google.com/citations?hl=en&user=ITOb_GsAAAAJ">[Google Scholar]</a></p>
+        <p>Department of Information Technology & Management, Daffodil International University, Savar, Dhaka</p>
+      </div>
+    </section>
   </div>
 
-  <footer class="bg-gray-800 text-white py-4 text-center mt-10">
-    <p>&copy; 2025 Kazi Rifat Ahmed. All rights reserved.</p>
+  <footer>
+    <p>© 2025 Kazi Rifat Ahmed. All rights reserved.</p>
   </footer>
 
   <script>
-    console.log("Education page loaded successfully at 08:53 PM +06, August 05, 2025!");
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('nav ul').classList.toggle('active');
+    });
   </script>
 </body>
 </html>
